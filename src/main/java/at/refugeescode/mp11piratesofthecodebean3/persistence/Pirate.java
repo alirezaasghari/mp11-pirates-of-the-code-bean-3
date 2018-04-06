@@ -1,11 +1,17 @@
 package at.refugeescode.mp11piratesofthecodebean3.persistence;
 
+import javax.persistence.*;
+
+@Entity
 public class Pirate {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
     private PieceOfEight pieceOfEight;
 
     public Long getId() {

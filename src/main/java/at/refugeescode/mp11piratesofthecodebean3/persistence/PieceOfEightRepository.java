@@ -1,5 +1,7 @@
 package at.refugeescode.mp11piratesofthecodebean3.persistence;
 
-public interface PieceOfEightRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PieceOfEightRepository extends JpaRepository<PieceOfEight, Long> {
 
 }

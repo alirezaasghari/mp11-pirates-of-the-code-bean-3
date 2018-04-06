@@ -3,10 +3,12 @@ package at.refugeescode.mp11piratesofthecodebean3.logic;
 import at.refugeescode.mp11piratesofthecodebean3.persistence.PieceOfEightRepository;
 import at.refugeescode.mp11piratesofthecodebean3.persistence.Pirate;
 import at.refugeescode.mp11piratesofthecodebean3.persistence.PirateRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
-//@Service
+@Service
 public class PirateService {
 
     private PirateRepository pirateRepository;
@@ -24,19 +26,36 @@ public class PirateService {
     public void populatePirates() {
 
         // delete all the pirates and pieces of eight from the database
+        deleteAll();
+
         // use the csvParser to get a list of all the pirates, the path should be "classpath:pirates.csv"
+        PirateModule pirateModule = new PirateModule("classpath:pirates.csv");
+        List<Pirate> pirates = csvParser.asList(pirateModule);
+
         // for each pirate, save first manually the piece of eight,
         // connect it to the corresponding pirate and then save the pirate
+        pirates.stream()
+                .map(savePieceOfEight())
+                .forEach(pirateRepository::save);
+    }
+
+    private Function<Pirate, Pirate> savePieceOfEight() {
+        return pirate -> {
+            pieceOfEightRepository.save(pirate.getPieceOfEight());
+            return pirate;
+        };
     }
 
     public List<Pirate> findAll() {
-        return null; // return all the pirates from the database
+        return pirateRepository.findAll(); // return all the pirates from the database
     }
 
     public void deleteAll() {
 
         // delete all pirates
-        // delete all pieces of eight
+        pirateRepository.deleteAll();
 
+        // delete all pieces of eight
+        pieceOfEightRepository.deleteAll();
     }
 }

@@ -1,7 +1,14 @@
 package at.refugeescode.mp11piratesofthecodebean3.persistence;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class PieceOfEight {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
